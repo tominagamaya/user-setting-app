@@ -7,17 +7,36 @@
         <div class="form-group form-inline">
           <label class="control-label col-md-2 form-label">名前</label>
           <span class="badge badge-danger badge-icon">必須</span>
-          <input type="text" class="form-control col-md-6" placeholder="Name...">
+          <div class="control-label col-md-9">
+            <input type="text" class="form-control input-text-form" name="name" data-vv-as="名前" placeholder="Name..."
+                   v-model="name" v-validate="'required|max:100'" :class="{'input': true, 'is-danger': errors.has('name')}">
+            <div class="auto-setting-alert-div">
+              <p v-show="errors.has('name')" class="auto-setting-alert">{{ errors.first('name') }}</p>
+            </div>
+          </div>
         </div>
         <div class="form-group form-inline">
           <label class="control-label col-md-2 form-label">メールアドレス</label>
           <span class="badge badge-danger badge-icon">必須</span>
-          <input type="email" class="form-control col-md-6" placeholder="Email...">
+          <div class="control-label col-md-9">
+            <input type="text" class="form-control input-text-form" name="mailadress" data-vv-as="メールアドレス" placeholder="Email..."
+                   v-model="mailadress" v-validate="'required|email|max:100'" :class="{'input': true, 'is-danger': errors.has('mailadress')}">
+            <div class="auto-setting-alert-div">
+              <p v-show="errors.has('mailadress')" class="auto-setting-alert">{{ errors.first('mailadress') }}</p>
+            </div>
+          </div>
         </div>
         <div class="form-group form-inline">
-          <label class="control-label col-md-2 form-label form-status">お問い合わせ内容</label>
+          <label class="control-label col-md-2 form-label">お問い合わせ内容</label>
           <span class="badge badge-danger badge-icon">必須</span>
-          <textarea class="form-control col-md-6" rows='5' placeholder="Help..."></textarea>
+          <div class="control-label col-md-9">
+            <textarea class="form-control input-text-form" rows='5' placeholder="Help..." name="helpText" data-vv-as="お問い合わせ内容"
+              v-model="helpContent" v-validate="'required|max:100'" :class="{'textarea': true, 'is-danger': errors.has('helpText')}">
+            </textarea>
+            <div class="auto-setting-alert-div">
+              <p v-show="errors.has('helpText')" class="auto-setting-alert">{{ errors.first('helpText') }}</p>
+            </div>
+          </div>
         </div>
       </form>
     </div>
@@ -69,6 +88,9 @@ export default {
   font-size: 14px;
   margin: 30px 80px 50px 30px;
 }
+.input-text-form {
+  min-width: 60%;
+}
 .form-label {
   justify-content: left;
 }
@@ -77,13 +99,18 @@ export default {
 }
 .setting-footer {
   text-align: left;
-  margin: 20px 0 0 18.7%;
+  margin: 20px 0 0 20%;
 }
 .button-register {
   width: 140px;
   font-size: 15px;
 }
-input[type="radio"]:focus {
-  outline: 0;
+.auto-setting-alert {
+  color: red;
+  font-size: 12px;
+  margin-bottom: 0;
+}
+.auto-setting-alert-div {
+  height: 1px;
 }
 </style>

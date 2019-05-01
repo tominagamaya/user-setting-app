@@ -15,6 +15,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "bootstrap-vue": "^2.0.0-rc.19",
     "core-js": "^2.6.5",
+    "vee-validate": "^2.2.5",
     "vue": "^2.6.10"
   },
   "devDependencies": {

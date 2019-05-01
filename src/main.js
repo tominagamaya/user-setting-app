@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import VeeValidate, { Validator } from 'vee-validate'
+import ja from 'vee-validate/dist/locale/ja'
 
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -14,6 +16,8 @@ library.add(faHome, faCheck, faCog, faQuestionCircle, faSignInAlt, faSearch, faE
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
+Validator.localize('ja', ja)
+Vue.use(VeeValidate, { locale: ja })
 
 new Vue({
   router,
