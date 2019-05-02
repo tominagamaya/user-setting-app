@@ -160,9 +160,14 @@ export default {
       if (await this.isExistErrors()) {
         return
       }
-      this.name = this.editName
-      this.mail = this.editMail
-      this.status = this.editStatus
+      let users = []
+      for (let i in this.userList) {
+        if (this.userList[i].id === this.editId) {
+          this.userList[i].name = this.editName
+          this.userList[i].mail = this.editMail
+          this.userList[i].status = this.editStatus
+        }
+      }
       this.$refs.modal.hide()
     },
     async isExistErrors () {
