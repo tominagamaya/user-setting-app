@@ -20,7 +20,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="value in userList" :key="value.id">
+          <tr v-for="value in filteredUsers" :key="value.id">
             <td><input type="checkbox"></td>
             <td>{{ value.name }}</td>
             <td>{{ value.mail }}</td>
@@ -94,6 +94,17 @@ export default {
   components: {
     NavHeader
   },
+  computed: {
+    filteredUsers () {
+      let users = []
+      for (let i in this.userList) {
+        if (this.isExistKeyword(this.userList[i].name) || this.isExistKeyword(this.userList[i].mail)) {
+          users.push(this.userList[i])
+        }
+      }
+      return users
+    }
+  },
   data () {
     return {
       keyword: '',
@@ -149,6 +160,9 @@ export default {
       if (await this.isExistErrors()) {
         return
       }
+      this.name = this.editName
+      this.mail = this.editMail
+      this.status = this.editStatus
       this.$refs.modal.hide()
     },
     async isExistErrors () {
@@ -159,6 +173,9 @@ export default {
         }
       })
       return isError
+    },
+    isExistKeyword (value) {
+      return value.indexOf(this.keyword) !== -1
     }
   },
   created () {
