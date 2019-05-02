@@ -31,7 +31,7 @@
           <span class="badge badge-danger badge-icon">必須</span>
           <div class="control-label col-md-9">
             <textarea class="form-control input-text-form" rows='5' placeholder="Help..." name="helpText" data-vv-as="お問い合わせ内容"
-              v-model="helpText" v-validate="'required|max:100'" :class="{'textarea': true, 'is-danger': errors.has('helpText')}">
+              v-model="helpText" v-validate="'required|max:1000'" :class="{'textarea': true, 'is-danger': errors.has('helpText')}">
             </textarea>
             <div class="auto-setting-alert-div">
               <p v-show="errors.has('helpText')" class="auto-setting-alert">{{ errors.first('helpText') }}</p>
@@ -41,7 +41,7 @@
       </form>
     </div>
     <div class="setting-footer">
-      <input type="button" class="btn btn-success button-register" @click="register" value="送信">
+      <input type="button" class="btn btn-success button-send" @click="send" value="送信">
     </div>
   </div>
 </template>
@@ -60,8 +60,28 @@ export default {
     }
   },
   methods: {
-    async register () {
-      // TODO
+    async send () {
+      if (await this.isExistErrors()) {
+        return
+      }
+      this.$bvModal.msgBoxOk('問い合わせ内容を送信しました', {
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'success',
+        headerClass: 'p-2 border-bottom-0',
+        footerClass: 'p-2 border-top-0',
+        centered: true
+      })
+      // TODO API
+    },
+    async isExistErrors () {
+      let isError = false
+      await this.$validator.validate().then(valid => {
+        if (!valid) {
+          isError = true
+        }
+      })
+      return isError
     }
   }
 }
@@ -101,7 +121,7 @@ export default {
   text-align: left;
   margin: 20px 0 0 20%;
 }
-.button-register {
+.button-send {
   width: 140px;
   font-size: 15px;
 }

@@ -60,7 +60,27 @@ export default {
   },
   methods: {
     async register () {
+      if (await this.isExistErrors()) {
+        return
+      }
+      this.$bvModal.msgBoxOk('ユーザーを登録しました', {
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'success',
+        headerClass: 'p-2 border-bottom-0',
+        footerClass: 'p-2 border-top-0',
+        centered: true
+      })
       // TODO API
+    },
+    async isExistErrors () {
+      let isError = false
+      await this.$validator.validate().then(valid => {
+        if (!valid) {
+          isError = true
+        }
+      })
+      return isError
     }
   }
 }
