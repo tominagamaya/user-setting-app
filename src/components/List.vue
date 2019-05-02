@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import NavHeader from './NavHeader'
 export default {
   components: {
@@ -66,22 +67,15 @@ export default {
   },
   methods: {
     getList () {
-      // TODO API
-      this.userList =
-        [{
-            'id': 2,
-            'name': '平成　二郎',
-            'mail': 'jiro@hoge.com',
-            'status': '1',
-            'date': '2019-01-02 9:10:11',
-        },
-        {
-          'id': 1,
-          'name': '令和　太郎',
-          'mail': 'taro@hoge.com',
-          'status': '2',
-          'date': '2019-01-01 9:00:00'
-      }]
+      const path = 'http://127.0.0.1:5000/list'
+      axios.get(path)
+        .then(res => {
+          this.userList = res.data
+        })
+        .catch(error => {
+          // eslint-disable-next-line
+          console.log(error)
+        })
     },
     getStatus (value) {
       let status = this.status.find(i => i.key === value)
