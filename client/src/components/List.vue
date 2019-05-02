@@ -32,13 +32,58 @@
               <span class="badge badge-secondary">{{ getStatus(value.status) }}</span>
             </td>
             <td class="td-icon">
-              <font-awesome-icon icon="edit" class="icon-edit"></font-awesome-icon>
+              <font-awesome-icon v-b-modal.edit-modal icon="edit" class="icon-edit" @click="setEditId(value.id)"></font-awesome-icon>
             </td>
           </tr>
           </tbody>
         </table>
       </div>
     </div>
+    <b-modal
+      id="edit-modal"
+      ref="modal"
+      @show="initModal">
+      <template slot="modal-header">
+        <div class="div-title">ユーザー情報編集</div>
+      </template>
+      <form class="form-content">
+        <div class="form-group form-inline">
+          <label class="control-label col-md-3 form-label">名前</label>
+          <div class="control-label col-md-9">
+            <input type="text" class="form-control input-text-form" name="name" data-vv-as="名前"
+                   v-model="editName" v-validate="'required|max:100'" :class="{'input': true, 'is-danger': errors.has('name')}">
+            <div class="auto-setting-alert-div">
+              <p v-show="errors.has('name')" class="auto-setting-alert">{{ errors.first('name') }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-inline">
+          <label class="control-label col-md-3 form-label">メールアドレス</label>
+          <div class="control-label col-md-9">
+            <input type="text" class="form-control input-text-form" name="mailadress" data-vv-as="メールアドレス"
+                   v-model="editMail" v-validate="'required|email|max:100'" :class="{'input': true, 'is-danger': errors.has('mailadress')}">
+            <div class="auto-setting-alert-div">
+              <p v-show="errors.has('mailadress')" class="auto-setting-alert">{{ errors.first('mailadress') }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-inline form-group-status">
+          <label class="control-label col-md-3 form-label">ステータス</label>
+          <label class="radio-label">
+            <input type="radio" class="form-check-input" name="editStatus" value="1" v-model="editStatus" checked>
+            <label class="label-radio">有効</label>
+          </label>
+          <label class="radio-label">
+            <input type="radio" class="form-check-input" name="editStatus" value="2" v-model="editStatus">
+            <label class="label-radio">無効</label>
+          </label>
+        </div>
+      </form>
+      <template slot="modal-footer">
+        <b-button size="sm" class="modal-button" variant="outline-secondary" @click="cancelModal">取消</b-button>
+        <b-button size="sm" class="modal-button" variant="success" @click="updateModal">更新</b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -62,7 +107,11 @@ export default {
       status: [
         {key: '1', name: '有効'},
         {key: '2', name: '無効'}
-      ]
+      ],
+      editId: 0,
+      editName: '',
+      editMail: '',
+      editStatus: ''
     }
   },
   methods: {
@@ -80,6 +129,36 @@ export default {
     getStatus (value) {
       let status = this.status.find(i => i.key === value)
       return status ? status.name : null
+    },
+    setEditId(index) {
+      this.editId = index
+    },
+    initModal() {
+      const editUser = this.userList.filter(u => u.id === this.editId)
+      if (editUser.length === 0) {
+        return
+      }
+      this.editName = editUser[0].name
+      this.editMail = editUser[0].mail
+      this.editStatus = editUser[0].status
+    },
+    cancelModal() {
+      this.$refs.modal.hide()
+    },
+    async updateModal() {
+      if (await this.isExistErrors()) {
+        return
+      }
+      this.$refs.modal.hide()
+    },
+    async isExistErrors () {
+      let isError = false
+      await this.$validator.validate().then(valid => {
+        if (!valid) {
+          isError = true
+        }
+      })
+      return isError
     }
   },
   created () {
@@ -145,6 +224,41 @@ td {
 }
 .td-icon {
   text-align: center;
+}
+.input-text-form {
+  min-width: 100%;
+}
+.radio-label {
+  padding-left: 18px;
+  font-size: 14px;
+}
+.form-label {
+  justify-content: left;
+  font-size: 14px;
+  padding-right: 0;
+}
+.auto-setting-alert {
+  color: red;
+  font-size: 12px;
+  margin-bottom: 0;
+}
+.auto-setting-alert-div {
+  height: 1px;
+}
+.form-group-status {
+  margin-top: 25px;
+}
+.edit-modal {
+  font-size: 10px;
+}
+.div-title {
+  padding: 0.25em 0.5em;
+  color: #494949;
+  background: transparent;
+  border-left: solid 5px #aaa;
+}
+.modal-button {
+  width: 80px;
 }
 @media screen and (min-width: 1300px) {
   table th {
