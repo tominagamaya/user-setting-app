@@ -20,7 +20,7 @@
           <span class="badge badge-danger badge-icon">必須</span>
           <div class="control-label col-md-9">
             <input type="text" class="form-control input-text-form" name="mailadress" data-vv-as="メールアドレス" placeholder="Email..."
-                   v-model="mailadress" v-validate="'required|email|max:100'" :class="{'input': true, 'is-danger': errors.has('mailadress')}">
+                   v-model="mail" v-validate="'required|email|max:100'" :class="{'input': true, 'is-danger': errors.has('mailadress')}">
             <div class="auto-setting-alert-div">
               <p v-show="errors.has('mailadress')" class="auto-setting-alert">{{ errors.first('mailadress') }}</p>
             </div>
