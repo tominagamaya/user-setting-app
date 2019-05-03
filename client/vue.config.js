@@ -1,6 +1,6 @@
 module.exports = {
     assetsDir: 'static',
     devServer: {
-        proxy: 'http://localhost:5000'
+        proxy: 'http://localhost:8000'
     }
 }

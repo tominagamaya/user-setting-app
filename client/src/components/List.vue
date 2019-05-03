@@ -127,7 +127,7 @@ export default {
   },
   methods: {
     getList () {
-      const path = 'http://127.0.0.1:5000/list'
+      const path = 'http://127.0.0.1:8000/list'
       axios.get(path)
         .then(res => {
           this.userList = res.data

@@ -1,4 +1,4 @@
-## deploy
+## Local
 
 1. `create build file in dist folder `
 
