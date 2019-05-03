@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, jsonify
+from flask import Flask, render_template, jsonify
 from flask_cors import CORS
 
 DEBUG = True
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_folder='../client/dist/static',
+            template_folder='../client/dist'
+            )
 app.config.from_object(__name__)
 
 CORS(app)
@@ -43,6 +46,12 @@ def list():
             'date': '2019-01-01 9:00:00'
         }]
     )
+
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def index(path):
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
